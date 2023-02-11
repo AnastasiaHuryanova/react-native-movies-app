@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, FlatList, Text} from 'react-native';
+import {SafeAreaView, FlatList, Text, View} from 'react-native';
 
 import {getTopRatedMovies} from './axios/theMovieDb/movies';
 import styles from './styles';
@@ -18,8 +18,8 @@ const App = () => {
           title: movie.title,
           id: movie.id,
           image: TMDB_URL + movie.poster_path,
-          year: movie.release_date.slice(0,4),
-          rating: movie.vote_average,
+          year: movie.release_date.slice(0, 4),
+          rating: movie.vote_average
         };
       });
 
@@ -27,14 +27,18 @@ const App = () => {
     };
     fetchMovies();
   }, []);
-  
+
+  const ItemDivider = () => {
+    return <View style={styles.itemDivider} />;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Hello bb</Text>
       <FlatList
         data={topRatedMovies}
         renderItem={({item}) => <MovieItem movie={item}></MovieItem>}
         keyExtractor={movie => movie.id}
+        ItemSeparatorComponent={ItemDivider}
       />
     </SafeAreaView>
   );
