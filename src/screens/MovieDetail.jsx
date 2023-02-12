@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
-import {Image, Text, View} from 'react-native';
+import {Image, ImageBackground, Text, View} from 'react-native';
 import {getMovieDetail} from '../axios/theMovieDb/movies';
+import styles from '../styles';
 
 const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -20,12 +21,15 @@ const MovieDetail = ({route}) => {
 
   return (
     <View>
-      <Text>{details.title}</Text>
-      <Image
-        style={{height: 300}}
-        source={{uri: TMDB_URL + details.backdrop_path}}
-      />
-      <Text>{details.overview}</Text>
+      <View>
+        <ImageBackground
+          source={{uri: TMDB_URL + details.backdrop_path}}
+          resizeMode="cover"
+          style={{height: 300}}>
+          <Text style={styles.movieName}>{details.title}</Text>
+        </ImageBackground>
+      </View>
+      <Text style={styles.overview}>{details.overview}</Text>
     </View>
   );
 };

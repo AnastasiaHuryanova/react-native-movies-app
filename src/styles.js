@@ -34,6 +34,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 5,
     resizeMode: 'contain'
+  },
+  overview: {
+    fontSize: 25,
+    color: 'black',
+    textAlign: 'justify',
+    lineHeight: 35,
+    margin: 25
+  },
+  movieName: {
+    fontSize: 35,
+    color: 'white',
+    margin: 25,
+    position: 'absolute',
+    bottom: 0
   }
 });
 
