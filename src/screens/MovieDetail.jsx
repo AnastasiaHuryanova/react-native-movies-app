@@ -1,9 +1,10 @@
 import {Text, View} from 'react-native';
 
-const MovieDetail = () => {
+const MovieDetail = ({route}) => {
+  const {id} = route.params;
   return (
     <View>
-      <Text>ciao</Text>
+      <Text>{id}</Text>
     </View>
   );
 };

@@ -8,3 +8,10 @@ export const getTopRatedMovies = async page => {
   );
   return response.data;
 };
+
+export const getMovieDetail = async id => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
+  );
+  return response.data;
+};

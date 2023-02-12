@@ -6,7 +6,8 @@ import {faStar, faChevronRight} from '@fortawesome/free-solid-svg-icons';
 import styles from '../styles';
 
 const MovieItem = ({movie, navigation}) => (
-  <TouchableOpacity onPress={() => navigation.navigate('MovieDetail')}>
+  <TouchableOpacity
+    onPress={() => navigation.navigate('MovieDetail', {id: movie.id})}>
     <View style={styles.item}>
       <Image style={styles.image} source={{uri: movie.image}} />
       <View style={styles.description}>
