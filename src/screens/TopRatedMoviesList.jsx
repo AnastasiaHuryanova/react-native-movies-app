@@ -9,10 +9,11 @@ const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
 
 const TopRatedMoviesList = ({navigation}) => {
   const [topRatedMovies, setTopRatedMovies] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const fetchedMovies = await getTopRatedMovies(1);
+      const fetchedMovies = await getTopRatedMovies(page);
       const movieList = fetchedMovies.results.map(movie => {
         return {
           title: movie.title,
@@ -23,17 +24,17 @@ const TopRatedMoviesList = ({navigation}) => {
         };
       });
 
-      setTopRatedMovies(movieList);
+      setTopRatedMovies([...topRatedMovies, ...movieList]);
     };
     fetchMovies();
-  }, []);
+  }, [page]);
 
   const ItemDivider = () => {
     return <View style={styles.itemDivider} />;
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={topRatedMovies}
         renderItem={({item}) => (
@@ -41,8 +42,12 @@ const TopRatedMoviesList = ({navigation}) => {
         )}
         keyExtractor={movie => movie.id}
         ItemSeparatorComponent={ItemDivider}
+        onEndReachedThreshold={0.5}
+        onEndReached={() => {
+          setPage(page + 1);
+        }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

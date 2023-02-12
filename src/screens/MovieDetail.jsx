@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Image, ImageBackground, Text, View} from 'react-native';
+import {Image, ImageBackground, ScrollView, Text, View} from 'react-native';
 import {getMovieDetail} from '../axios/theMovieDb/movies';
 import styles from '../styles';
 
@@ -20,7 +20,7 @@ const MovieDetail = ({route}) => {
   }, []);
 
   return (
-    <View>
+    <ScrollView>
       <View>
         <ImageBackground
           source={{uri: TMDB_URL + details.backdrop_path}}
@@ -30,7 +30,7 @@ const MovieDetail = ({route}) => {
         </ImageBackground>
       </View>
       <Text style={styles.overview}>{details.overview}</Text>
-    </View>
+    </ScrollView>
   );
 };
 
