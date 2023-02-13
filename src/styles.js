@@ -3,8 +3,7 @@ import {red100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors'
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0
+    flex: 1
   },
   item: {
     padding: 15,
@@ -20,7 +19,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
     color: 'black'
   },
@@ -45,6 +44,9 @@ const styles = StyleSheet.create({
   movieName: {
     fontSize: 35,
     color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
     margin: 25,
     position: 'absolute',
     bottom: 0

@@ -1,21 +1,34 @@
-import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import TopRatedMoviesList from './screens/TopRatedMoviesList';
+import React from 'react';
+import 'react-native-gesture-handler';
 import MovieDetail from './screens/MovieDetail';
+import TopRatedMoviesList from './screens/TopRatedMoviesList';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="HomTopRatedMoviesList">
+      <Stack.Navigator
+        initialRouteName="TopRatedMoviesList"
+        screenOptions={{
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },
+          animation: 'slide_from_right'
+        }}>
         <Stack.Screen
           name="TopRatedMoviesList"
           component={TopRatedMoviesList}
-          options={{title: 'Top rated Movies List'}}
+          options={{title: 'Movies'}}
         />
-        <Stack.Screen name="MovieDetail" component={MovieDetail} />
+        <Stack.Screen
+          name="MovieDetail"
+          component={MovieDetail}
+          options={{title: 'Movie Info'}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
