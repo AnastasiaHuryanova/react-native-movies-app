@@ -1,23 +1,41 @@
-import React, {useEffect} from 'react';
-import {FlatList, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {createSlice} from '@reduxjs/toolkit';
+
+const topRatedMoviesListSlice = createSlice({
+  name: 'topRatedMovies',
+  initialState: {
+    topRatedMovies: [],
+    page: 1
+  },
+  reducers: {
+    topRatedMoviesSetting: (state, action) => {
+      state.topRatedMovies = state.topRatedMovies.concat(action.payload);
+    },
+    pageSetting: state => {
+      state.page += 1;
+    }
+  }
+});
+
+export const {topRatedMoviesSetting, pageSetting} =
+  topRatedMoviesListSlice.actions;
+export const selectPage = state => state.topRatedMovies.page;
+export const selectTopRatedMovies = state =>
+  state.topRatedMovies.topRatedMovies;
+export default topRatedMoviesListSlice.reducer;
+
+/* TopRatedMovielist with states
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, FlatList, View} from 'react-native';
 
 import {getTopRatedMovies} from '../axios/theMovieDb/movies';
-import {
-  pageSetting,
-  selectPage,
-  selectTopRatedMovies,
-  topRatedMoviesSetting
-} from '../features/topRatedMoviesListSlice';
 import styles from '../styles';
 import MovieItem from '../views/MovieItem';
 
 const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
 
 const TopRatedMoviesList = ({navigation}) => {
-  const dispatch = useDispatch();
-  const movies = useSelector(selectTopRatedMovies);
-  const page = useSelector(selectPage);
+  const [topRatedMovies, setTopRatedMovies] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -32,7 +50,7 @@ const TopRatedMoviesList = ({navigation}) => {
         };
       });
 
-      dispatch(topRatedMoviesSetting(movieList));
+      setTopRatedMovies([...topRatedMovies, ...movieList]);
     };
     fetchMovies();
   }, [page]);
@@ -43,9 +61,8 @@ const TopRatedMoviesList = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* {console.log(movies, page)} */}
       <FlatList
-        data={movies}
+        data={topRatedMovies}
         renderItem={({item}) => (
           <MovieItem movie={item} navigation={navigation}></MovieItem>
         )}
@@ -53,11 +70,11 @@ const TopRatedMoviesList = ({navigation}) => {
         ItemSeparatorComponent={ItemDivider}
         onEndReachedThreshold={0.5}
         onEndReached={() => {
-          dispatch(pageSetting());
+          setPage(page + 1);
         }}
       />
     </View>
   );
 };
 
-export default TopRatedMoviesList;
+export default TopRatedMoviesList; */

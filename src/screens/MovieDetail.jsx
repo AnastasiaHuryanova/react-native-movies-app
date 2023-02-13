@@ -1,35 +1,44 @@
-import {useEffect, useState} from 'react';
-import {Image, ImageBackground, ScrollView, Text, View} from 'react-native';
+import {useEffect} from 'react';
+import {ImageBackground, ScrollView, Text, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {getMovieDetail} from '../axios/theMovieDb/movies';
+import {movieDetailsSetting, selectDetails} from '../features/movieDetailSlice';
 import styles from '../styles';
 
 const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
 
 const MovieDetail = ({route}) => {
   const {id} = route.params;
-
-  const [details, setDetails] = useState({});
+  const dispatch = useDispatch();
+  const details = useSelector(selectDetails);
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
       const movieDetail = await getMovieDetail(id);
-      setDetails(movieDetail);
-    };
+      dispatch(movieDetailsSetting(movieDetail));
 
+      console.log(JSON.stringify(movieDetail));
+    };
     fetchMovieDetail();
   }, []);
 
   return (
     <ScrollView>
       <View>
-        <ImageBackground
-          source={{uri: TMDB_URL + details.backdrop_path}}
-          resizeMode="cover"
-          style={{height: 300}}>
-          <Text style={styles.movieName}>{details.title}</Text>
-        </ImageBackground>
+        {details?.backdrop_path && (
+          <ImageBackground
+            source={{uri: TMDB_URL + details.backdrop_path}}
+            resizeMode="cover"
+            style={{height: 300}}>
+            {details?.title && (
+              <Text style={styles.movieName}>{details.title}</Text>
+            )}
+          </ImageBackground>
+        )}
       </View>
-      <Text style={styles.overview}>{details.overview}</Text>
+      {details?.overview && (
+        <Text style={styles.overview}>{details.overview}</Text>
+      )}
     </ScrollView>
   );
 };
