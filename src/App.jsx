@@ -1,9 +1,9 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
-import store from './app/store';
+
+import store from './redux/store';
 import MovieDetail from './screens/MovieDetail';
 import TopRatedMoviesList from './screens/TopRatedMoviesList';
 

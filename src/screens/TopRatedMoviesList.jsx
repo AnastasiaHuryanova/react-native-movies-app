@@ -1,14 +1,9 @@
 import React, {useEffect} from 'react';
 import {FlatList, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {topRatedMoviesListSlice} from '../redux/store';
 
 import {getTopRatedMovies} from '../axios/theMovieDb/movies';
-import {
-  pageSetting,
-  selectPage,
-  selectTopRatedMovies,
-  topRatedMoviesSetting
-} from '../features/topRatedMoviesListSlice';
 import styles from '../styles';
 import MovieItem from '../views/MovieItem';
 
@@ -16,8 +11,8 @@ const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
 
 const TopRatedMoviesList = ({navigation}) => {
   const dispatch = useDispatch();
-  const movies = useSelector(selectTopRatedMovies);
-  const page = useSelector(selectPage);
+  const movies = useSelector(state => state.topRatedMoviesList.movies);
+  const page = useSelector(state => state.topRatedMoviesList.page);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -32,7 +27,7 @@ const TopRatedMoviesList = ({navigation}) => {
         };
       });
 
-      dispatch(topRatedMoviesSetting(movieList));
+      dispatch(topRatedMoviesListSlice.actions.moviesSetting(movieList));
     };
     fetchMovies();
   }, [page]);
@@ -43,7 +38,6 @@ const TopRatedMoviesList = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* {console.log(movies, page)} */}
       <FlatList
         data={movies}
         renderItem={({item}) => (
@@ -53,7 +47,7 @@ const TopRatedMoviesList = ({navigation}) => {
         ItemSeparatorComponent={ItemDivider}
         onEndReachedThreshold={0.5}
         onEndReached={() => {
-          dispatch(pageSetting());
+          dispatch(topRatedMoviesListSlice.actions.pageSetting());
         }}
       />
     </View>

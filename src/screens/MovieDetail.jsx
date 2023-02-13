@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {ImageBackground, ScrollView, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getMovieDetail} from '../axios/theMovieDb/movies';
-import {movieDetailsSetting, selectDetails} from '../features/movieDetailSlice';
+import {movieDetailSlice} from '../redux/store';
 import styles from '../styles';
 
 const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
@@ -10,14 +10,12 @@ const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
 const MovieDetail = ({route}) => {
   const {id} = route.params;
   const dispatch = useDispatch();
-  const details = useSelector(selectDetails);
+  const details = useSelector(state => state.movieDetail.movie);
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
       const movieDetail = await getMovieDetail(id);
-      dispatch(movieDetailsSetting(movieDetail));
-
-      console.log(JSON.stringify(movieDetail));
+      dispatch(movieDetailSlice.actions.movieDetailsSetting(movieDetail));
     };
     fetchMovieDetail();
   }, []);
