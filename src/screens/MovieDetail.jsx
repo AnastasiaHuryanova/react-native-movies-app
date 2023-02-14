@@ -1,16 +1,26 @@
-import {useEffect} from 'react';
-import {ImageBackground, ScrollView, Text, View} from 'react-native';
+import {faHeart} from '@fortawesome/free-regular-svg-icons';
+import {faHeart as faHeartSolid} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {useEffect, useState} from 'react';
+import {ImageBackground, Pressable, ScrollView, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getMovieDetail} from '../axios/theMovieDb/movies';
-import {movieDetailSlice} from '../redux/store';
+import {favoritesSlice, movieDetailSlice} from '../redux/store';
+
 import styles from '../styles';
 
 const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
 
-const MovieDetail = ({route}) => {
+const MovieDetail = ({navigation, route}) => {
   const {id} = route.params;
+
   const dispatch = useDispatch();
   const details = useSelector(state => state.movieDetail.movie);
+  const favorites = useSelector(state => state.favorites.favorites);
+
+  const [iconHeart, setIconHeart] = useState(
+    favorites.includes(id) ? faHeartSolid : faHeart
+  );
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
@@ -20,9 +30,34 @@ const MovieDetail = ({route}) => {
     fetchMovieDetail();
   }, []);
 
+  const favoritesHandling = () => {
+    if (iconHeart === faHeart) {
+      setIconHeart(faHeartSolid);
+      dispatch(favoritesSlice.actions.addFavoriteMovieId(id));
+    } else {
+      setIconHeart(faHeart);
+      dispatch(favoritesSlice.actions.removeFavoriteByMovieId(id));
+    }
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable
+          onPress={() => {
+            favoritesHandling();
+          }}>
+          <FontAwesomeIcon
+            icon={iconHeart}
+            style={{color: 'red'}}></FontAwesomeIcon>
+        </Pressable>
+      )
+    });
+  }, [iconHeart]);
+
   return (
     <ScrollView>
-      <View>
+      <View options={{}}>
         {details?.backdrop_path && (
           <ImageBackground
             source={{uri: TMDB_URL + details.backdrop_path}}

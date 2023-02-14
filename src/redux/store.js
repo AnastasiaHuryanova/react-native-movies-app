@@ -28,9 +28,33 @@ export const movieDetailSlice = createSlice({
   }
 });
 
+export const favoritesSlice = createSlice({
+  name: 'favorites',
+  initialState: {
+    favorites: []
+  },
+  reducers: {
+    addFavoriteMovieId: (state, action) => {
+      const newFavoriteMovieId = action.payload;
+      const newFavorites = new Set(state.favorites);
+      newFavorites.add(newFavoriteMovieId);
+
+      state.favorites = [...newFavorites];
+    },
+    removeFavoriteByMovieId: (state, action) => {
+      const favoriteMovieIdToBeRemoved = action.payload;
+      const newFavorites = new Set(state.favorites);
+      newFavorites.delete(favoriteMovieIdToBeRemoved);
+
+      state.favorites = [...newFavorites];
+    }
+  }
+});
+
 export default store = configureStore({
   reducer: {
     topRatedMoviesList: topRatedMoviesListSlice.reducer,
-    movieDetail: movieDetailSlice.reducer
+    movieDetail: movieDetailSlice.reducer,
+    favorites: favoritesSlice.reducer
   }
 });
