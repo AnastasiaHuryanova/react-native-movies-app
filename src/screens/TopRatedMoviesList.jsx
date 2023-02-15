@@ -16,13 +16,6 @@ const TopRatedMoviesList = ({navigation}) => {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
-
   useEffect(() => {
     const fetchMovies = async () => {
       const fetchedMovies = await getTopRatedMovies(page);
@@ -40,7 +33,24 @@ const TopRatedMoviesList = ({navigation}) => {
     };
     fetchMovies();
   }, [page]);
-
+  const onRefresh = useCallback(() => {
+    const refreshMovies = async () => {
+      setRefreshing(true);
+      const fetchedMovies = await getTopRatedMovies(1);
+      const movieList = fetchedMovies.results.map(movie => {
+        return {
+          title: movie.title,
+          id: movie.id,
+          image: TMDB_URL + movie.poster_path,
+          year: movie.release_date.slice(0, 4),
+          rating: movie.vote_average
+        };
+      });
+      dispatch(topRatedMoviesListSlice.actions.resetMovies(movieList));
+      setRefreshing(false);
+    };
+    refreshMovies();
+  }, []);
   const ItemDivider = () => {
     return <View style={styles.itemDivider} />;
   };
