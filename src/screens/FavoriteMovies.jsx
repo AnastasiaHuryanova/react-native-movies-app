@@ -5,11 +5,9 @@ import {useSelector} from 'react-redux';
 import styles from '../styles';
 import MovieItem from '../views/MovieItem';
 
-const FavoriteMovies = () => {
-  const favorites = useSelector(state => state.favorites.favorites);
+const FavoriteMovies = ({navigation}) => {
   const movies = useSelector(state => state.topRatedMoviesList.movies);
-
-  const movie = movies.find(movies.id === favorites.id);
+  const favorites = useSelector(state => state.favorites.favorites);
 
   const ItemDivider = () => {
     return <View style={styles.itemDivider} />;
@@ -19,7 +17,8 @@ const FavoriteMovies = () => {
     <View style={styles.container}>
       <FlatList
         data={favorites}
-        renderItem={({movie}) => {
+        renderItem={({item}) => {
+          const movie = movies.find(movie => movie.id === item);
           return <MovieItem movie={movie} navigation={navigation}></MovieItem>;
         }}
         keyExtractor={id => id}

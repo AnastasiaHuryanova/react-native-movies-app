@@ -24,6 +24,9 @@ export const movieDetailSlice = createSlice({
   reducers: {
     movieDetailsSetting: (state, action) => {
       state.movie = action.payload;
+    },
+    movieDetailsRemoving: state => {
+      state.movie;
     }
   }
 });

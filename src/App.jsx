@@ -55,7 +55,9 @@ const App = () => {
               <Pressable onPress={() => {}}>
                 <FontAwesomeIcon
                   icon={faHeart}
-                  style={{color: 'red'}}></FontAwesomeIcon>
+                  style={{color: 'red'}}
+                  size={27}
+                />
               </Pressable>
             )
           }}

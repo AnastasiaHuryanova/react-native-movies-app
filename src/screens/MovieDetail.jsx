@@ -28,7 +28,8 @@ const MovieDetail = ({navigation, route}) => {
       dispatch(movieDetailSlice.actions.movieDetailsSetting(movieDetail));
     };
     fetchMovieDetail();
-  }, []);
+    dispatch(movieDetailSlice.actions.movieDetailsRemoving());
+  }, [id]);
 
   const favoritesHandling = () => {
     if (iconHeart === faHeart) {
@@ -47,9 +48,7 @@ const MovieDetail = ({navigation, route}) => {
           onPress={() => {
             favoritesHandling();
           }}>
-          <FontAwesomeIcon
-            icon={iconHeart}
-            style={{color: 'red'}}></FontAwesomeIcon>
+          <FontAwesomeIcon icon={iconHeart} style={{color: 'red'}} size={27} />
         </Pressable>
       )
     });
