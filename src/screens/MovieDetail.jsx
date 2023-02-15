@@ -57,7 +57,7 @@ const MovieDetail = ({navigation, route}) => {
 
   return (
     <ScrollView>
-      <View options={{}}>
+      <View>
         {details?.backdrop_path && (
           <ImageBackground
             source={{uri: TMDB_URL + details.backdrop_path}}
