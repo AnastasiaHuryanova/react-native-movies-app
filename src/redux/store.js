@@ -8,7 +8,8 @@ export const topRatedMoviesListSlice = createSlice({
   },
   reducers: {
     moviesSetting: (state, action) => {
-      state.movies = state.movies.concat(action.payload);
+      const moviesClone = [...state.movies];
+      state.movies = moviesClone.concat(action.payload);
     },
     pageSetting: state => {
       state.page += 1;
