@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {FlatList, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {FlatList, RefreshControl, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {topRatedMoviesListSlice} from '../redux/store';
 
@@ -13,6 +13,15 @@ const TopRatedMoviesList = ({navigation}) => {
   const dispatch = useDispatch();
   const movies = useSelector(state => state.topRatedMoviesList.movies);
   const page = useSelector(state => state.topRatedMoviesList.page);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -39,6 +48,10 @@ const TopRatedMoviesList = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        alwaysBounceVertical={true}
         data={movies}
         renderItem={({item}) => (
           <MovieItem movie={item} navigation={navigation}></MovieItem>
