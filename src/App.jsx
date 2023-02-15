@@ -54,9 +54,10 @@ const App = () => {
             headerRight: () => (
               <Pressable onPress={() => {}}>
                 <FontAwesomeIcon
+                  className="fa-beat"
                   icon={faHeart}
                   style={{color: 'red'}}
-                  size={27}
+                  size={25}
                 />
               </Pressable>
             )

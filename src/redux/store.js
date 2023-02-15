@@ -26,7 +26,7 @@ export const movieDetailSlice = createSlice({
       state.movie = action.payload;
     },
     movieDetailsRemoving: state => {
-      state.movie;
+      state.movie = {};
     }
   }
 });

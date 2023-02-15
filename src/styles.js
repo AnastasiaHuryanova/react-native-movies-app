@@ -1,5 +1,4 @@
-import {StyleSheet, StatusBar} from 'react-native';
-import {red100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
