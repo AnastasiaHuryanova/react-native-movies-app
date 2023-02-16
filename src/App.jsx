@@ -2,7 +2,7 @@ import {faHeart} from '@fortawesome/free-regular-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useState} from 'react';
+import React from 'react';
 import {Pressable, Text} from 'react-native';
 
 import {navigationRef} from './app/RootNavigation';
@@ -15,8 +15,6 @@ import TopRatedMoviesList from './screens/TopRatedMoviesList';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const [hidden, setHidden] = useState(false);
-
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator

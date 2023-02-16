@@ -5,7 +5,16 @@ import {useEffect, useState} from 'react';
 import {ImageBackground, Pressable, ScrollView, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getMovieDetail} from '../axios/theMovieDb/movies';
-import {favoritesSlice, movieDetailSlice} from '../redux/store';
+import {
+  addFavoriteMovieId,
+  removeFavoriteByMovieId,
+  selectFavorites
+} from '../redux/features/favoriteMoviesSlice';
+import {
+  movieDetailsRemoving,
+  movieDetailsSetting,
+  selectDetails
+} from '../redux/features/movieDetailSlice';
 
 import styles from '../styles';
 
@@ -15,8 +24,8 @@ const MovieDetail = ({navigation, route}) => {
   const {id} = route.params;
 
   const dispatch = useDispatch();
-  const details = useSelector(state => state.movieDetail.movie);
-  const favorites = useSelector(state => state.favorites.favorites);
+  const details = useSelector(selectDetails);
+  const favorites = useSelector(selectFavorites);
 
   const [iconHeart, setIconHeart] = useState(
     favorites.includes(id) ? faHeartSolid : faHeart
@@ -25,19 +34,19 @@ const MovieDetail = ({navigation, route}) => {
   useEffect(() => {
     const fetchMovieDetail = async () => {
       const movieDetail = await getMovieDetail(id);
-      dispatch(movieDetailSlice.actions.movieDetailsSetting(movieDetail));
+      dispatch(movieDetailsSetting(movieDetail));
     };
     fetchMovieDetail();
-    dispatch(movieDetailSlice.actions.movieDetailsRemoving());
+    dispatch(movieDetailsRemoving());
   }, [id]);
 
   const favoritesHandling = () => {
     if (iconHeart === faHeart) {
       setIconHeart(faHeartSolid);
-      dispatch(favoritesSlice.actions.addFavoriteMovieId(id));
+      dispatch(addFavoriteMovieId(id));
     } else {
       setIconHeart(faHeart);
-      return dispatch(favoritesSlice.actions.removeFavoriteByMovieId(id));
+      return dispatch(removeFavoriteByMovieId(id));
     }
   };
 

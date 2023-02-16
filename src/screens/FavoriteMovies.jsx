@@ -1,13 +1,15 @@
 import React from 'react';
 import {FlatList, View} from 'react-native';
 import {useSelector} from 'react-redux';
+import {selectFavorites} from '../redux/features/favoriteMoviesSlice';
+import {selectTopRatedMovies} from '../redux/features/topRatedMoviesListSlice';
 
 import styles from '../styles';
 import MovieItem from '../views/MovieItem';
 
 const FavoriteMovies = ({navigation}) => {
-  const movies = useSelector(state => state.topRatedMoviesList.movies);
-  const favorites = useSelector(state => state.favorites.favorites);
+  const movies = useSelector(selectTopRatedMovies);
+  const favorites = useSelector(selectFavorites);
 
   const ItemDivider = () => {
     return <View style={styles.itemDivider} />;

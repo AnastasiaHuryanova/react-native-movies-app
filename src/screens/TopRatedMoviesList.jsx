@@ -1,9 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {topRatedMoviesListSlice} from '../redux/store';
 
 import {getTopRatedMovies} from '../axios/theMovieDb/movies';
+import {
+  moviesSetting,
+  pageSetting,
+  resetMovies,
+  selectPage,
+  selectTopRatedMovies
+} from '../redux/features/topRatedMoviesListSlice';
 import styles from '../styles';
 import MovieItem from '../views/MovieItem';
 
@@ -11,8 +17,8 @@ const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
 
 const TopRatedMoviesList = ({navigation}) => {
   const dispatch = useDispatch();
-  const movies = useSelector(state => state.topRatedMoviesList.movies);
-  const page = useSelector(state => state.topRatedMoviesList.page);
+  const movies = useSelector(selectTopRatedMovies);
+  const page = useSelector(selectPage);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -29,7 +35,7 @@ const TopRatedMoviesList = ({navigation}) => {
         };
       });
 
-      dispatch(topRatedMoviesListSlice.actions.moviesSetting(movieList));
+      dispatch(moviesSetting(movieList));
     };
     fetchMovies();
   }, [page]);
@@ -46,7 +52,7 @@ const TopRatedMoviesList = ({navigation}) => {
           rating: movie.vote_average
         };
       });
-      dispatch(topRatedMoviesListSlice.actions.resetMovies(movieList));
+      dispatch(resetMovies(movieList));
       setRefreshing(false);
     };
     refreshMovies();
@@ -68,9 +74,9 @@ const TopRatedMoviesList = ({navigation}) => {
         )}
         keyExtractor={movie => movie.id}
         ItemSeparatorComponent={ItemDivider}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={4}
         onEndReached={() => {
-          dispatch(topRatedMoviesListSlice.actions.pageSetting());
+          dispatch(pageSetting());
         }}
       />
     </View>
