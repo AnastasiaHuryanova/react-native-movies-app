@@ -8,9 +8,7 @@ const topRatedMoviesListSlice = createSlice({
   },
   reducers: {
     moviesSetting: (state, action) => {
-      const moviesClone = [...state.movies];
-      state.movies = [];
-      state.movies = moviesClone.concat(action.payload);
+      state.movies = [...state.movies, ...action.payload];
     },
     resetMovies: (state, action) => {
       state.movies = action.payload;
