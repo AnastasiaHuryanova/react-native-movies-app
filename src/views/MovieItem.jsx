@@ -1,11 +1,12 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCalendar} from '@fortawesome/free-regular-svg-icons';
-import {faStar, faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import {faChevronRight, faStar} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {memo} from 'react';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 
 import styles from '../styles';
 
-const MovieItem = ({movie, navigation}) => (
+const MovieItem = memo(({movie, navigation}) => (
   <TouchableOpacity
     onPress={() => navigation.navigate('MovieDetail', {id: movie.id})}>
     <View style={styles.item}>
@@ -24,6 +25,6 @@ const MovieItem = ({movie, navigation}) => (
       </View>
     </View>
   </TouchableOpacity>
-);
+));
 
 export default MovieItem;

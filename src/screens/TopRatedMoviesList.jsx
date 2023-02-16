@@ -61,6 +61,13 @@ const TopRatedMoviesList = ({navigation}) => {
     return <View style={styles.itemDivider} />;
   };
 
+  const renderItem = useCallback(
+    ({item}) => (
+      <MovieItem movie={item} navigation={navigation} key={item.id}></MovieItem>
+    ),
+    []
+  );
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -69,9 +76,7 @@ const TopRatedMoviesList = ({navigation}) => {
         }
         alwaysBounceVertical={true}
         data={movies}
-        renderItem={({item}) => (
-          <MovieItem movie={item} navigation={navigation}></MovieItem>
-        )}
+        renderItem={renderItem}
         keyExtractor={movie => movie.id}
         ItemSeparatorComponent={ItemDivider}
         onEndReachedThreshold={4}
