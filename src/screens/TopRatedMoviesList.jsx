@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {getTopRatedMovies} from '../axios/theMovieDb/movies';
 import {useGetTopRatedMoviesQuery} from '../redux/features/apiSlice';
 import {
   moviesSetting,
@@ -28,8 +27,8 @@ const TopRatedMoviesList = ({navigation}) => {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const fetchedMovies = await getTopRatedMovies(page);
-      const movieList = await fetchedMovies.results.map(movie => {
+      //const fetchedMovies = await getTopRatedMovies(page);
+      const movieList = await fetchedMovies2?.results?.map(movie => {
         return {
           title: movie.title,
           id: movie.id,
@@ -46,8 +45,8 @@ const TopRatedMoviesList = ({navigation}) => {
   const onRefresh = useCallback(() => {
     const refreshMovies = async () => {
       setRefreshing(true);
-      const fetchedMovies = await getTopRatedMovies(1);
-      const movieList = fetchedMovies.results.map(movie => {
+      //const fetchedMovies = await getTopRatedMovies(1);
+      const movieList = await fetchedMovies2.results.map(movie => {
         return {
           title: movie.title,
           id: movie.id,
@@ -74,20 +73,22 @@ const TopRatedMoviesList = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        alwaysBounceVertical={true}
-        data={movies}
-        renderItem={renderItem}
-        keyExtractor={movie => movie.id}
-        ItemSeparatorComponent={ItemDivider}
-        onEndReachedThreshold={1}
-        onEndReached={() => {
-          dispatch(pageSetting());
-        }}
-      />
+      {movies && (
+        <FlatList
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          alwaysBounceVertical={true}
+          data={movies}
+          renderItem={renderItem}
+          keyExtractor={movie => movie.id}
+          ItemSeparatorComponent={ItemDivider}
+          onEndReachedThreshold={1}
+          onEndReached={() => {
+            dispatch(pageSetting());
+          }}
+        />
+      )}
     </View>
   );
 };
