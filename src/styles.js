@@ -27,14 +27,16 @@ const styles = StyleSheet.create({
   },
   details: {
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'grey'
   },
   image: {
     height: 80,
     width: 80,
     borderRadius: 10,
     margin: 5,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+    alignSelf: 'center'
   },
   overview: {
     fontSize: 25,

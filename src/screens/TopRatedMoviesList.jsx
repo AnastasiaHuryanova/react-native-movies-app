@@ -3,6 +3,7 @@ import {FlatList, RefreshControl, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {getTopRatedMovies} from '../axios/theMovieDb/movies';
+import {useGetTopRatedMoviesQuery} from '../redux/features/apiSlice';
 import {
   moviesSetting,
   pageSetting,
@@ -22,10 +23,13 @@ const TopRatedMoviesList = ({navigation}) => {
 
   const [refreshing, setRefreshing] = useState(false);
 
+  const {data: fetchedMovies2} = useGetTopRatedMoviesQuery(page);
+  console.log(fetchedMovies2);
+
   useEffect(() => {
     const fetchMovies = async () => {
       const fetchedMovies = await getTopRatedMovies(page);
-      const movieList = fetchedMovies.results.map(movie => {
+      const movieList = await fetchedMovies.results.map(movie => {
         return {
           title: movie.title,
           id: movie.id,
@@ -79,7 +83,7 @@ const TopRatedMoviesList = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={movie => movie.id}
         ItemSeparatorComponent={ItemDivider}
-        onEndReachedThreshold={4}
+        onEndReachedThreshold={1}
         onEndReached={() => {
           dispatch(pageSetting());
         }}

@@ -5,6 +5,7 @@ import {useEffect, useState} from 'react';
 import {ImageBackground, Pressable, ScrollView, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getMovieDetail} from '../axios/theMovieDb/movies';
+import {useGetMovieDetailQuery} from '../redux/features/apiSlice';
 import {
   addFavoriteMovieId,
   removeFavoriteByMovieId,
@@ -39,6 +40,9 @@ const MovieDetail = ({navigation, route}) => {
     fetchMovieDetail();
     dispatch(movieDetailsRemoving());
   }, [id]);
+
+  const {data: movieDetail2} = useGetMovieDetailQuery(id);
+  console.log(movieDetail2);
 
   const favoritesHandling = () => {
     if (iconHeart === faHeart) {
