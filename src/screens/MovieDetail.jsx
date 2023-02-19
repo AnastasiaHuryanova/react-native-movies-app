@@ -4,18 +4,12 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useEffect, useState} from 'react';
 import {ImageBackground, Pressable, ScrollView, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {getMovieDetail} from '../axios/theMovieDb/movies';
 import {useGetMovieDetailQuery} from '../redux/features/apiSlice';
 import {
   addFavoriteMovieId,
   removeFavoriteByMovieId,
   selectFavorites
 } from '../redux/features/favoriteMoviesSlice';
-import {
-  movieDetailsRemoving,
-  movieDetailsSetting,
-  selectDetails
-} from '../redux/features/movieDetailSlice';
 
 import styles from '../styles';
 
@@ -25,23 +19,13 @@ const MovieDetail = ({navigation, route}) => {
   const {id} = route.params;
 
   const dispatch = useDispatch();
-  const details = useSelector(selectDetails);
   const favorites = useSelector(selectFavorites);
 
   const [iconHeart, setIconHeart] = useState(
     favorites.includes(id) ? faHeartSolid : faHeart
   );
 
-  useEffect(() => {
-    const fetchMovieDetail = async () => {
-      const movieDetail = await getMovieDetail(id);
-      dispatch(movieDetailsSetting(movieDetail));
-    };
-    fetchMovieDetail();
-    dispatch(movieDetailsRemoving());
-  }, [id]);
-
-  const {data: movieDetail2} = useGetMovieDetailQuery(id);
+  const {data: details, isLoading} = useGetMovieDetailQuery(id);
 
   const favoritesHandling = () => {
     if (iconHeart === faHeart) {
@@ -71,23 +55,19 @@ const MovieDetail = ({navigation, route}) => {
     });
   }, [iconHeart]);
 
+  if (isLoading) return null;
+
   return (
     <ScrollView>
       <View>
-        {details?.backdrop_path && (
-          <ImageBackground
-            source={{uri: TMDB_URL + details.backdrop_path}}
-            resizeMode="cover"
-            style={{height: 300}}>
-            {details?.title && (
-              <Text style={styles.movieName}>{details.title}</Text>
-            )}
-          </ImageBackground>
-        )}
+        <ImageBackground
+          source={{uri: TMDB_URL + details.backdrop_path}}
+          resizeMode="cover"
+          style={{height: 300}}>
+          <Text style={styles.movieName}>{details.title}</Text>
+        </ImageBackground>
       </View>
-      {details?.overview && (
-        <Text style={styles.overview}>{details.overview}</Text>
-      )}
+      <Text style={styles.overview}>{details.overview}</Text>
     </ScrollView>
   );
 };

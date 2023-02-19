@@ -16,3 +16,4 @@ export const moviesApi = createApi({
 });
 
 export const {useGetTopRatedMoviesQuery, useGetMovieDetailQuery} = moviesApi;
+export default moviesApi.reducer;

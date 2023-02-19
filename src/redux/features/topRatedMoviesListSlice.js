@@ -16,8 +16,8 @@ const topRatedMoviesListSlice = createSlice({
     nextPage: state => {
       state.page += 1;
     },
-    resetPage: (state) => {
-      state.page = 1
+    resetPage: state => {
+      state.page = 1;
     }
   }
 });

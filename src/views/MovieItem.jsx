@@ -27,4 +27,4 @@ const MovieItem = ({movie, navigation}) => (
   </TouchableOpacity>
 );
 
-export default memo(MovieItem, (prev,next) => (prev.movie.id === next.movie.id));
+export default memo(MovieItem, (prev, next) => prev.movie.id === next.movie.id);
