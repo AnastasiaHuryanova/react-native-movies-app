@@ -1,29 +1,29 @@
-import React from 'react';
-import {FlatList, View} from 'react-native';
-import {useSelector} from 'react-redux';
-import {selectFavorites} from '../redux/features/favoriteMoviesSlice';
-import {selectTopRatedMovies} from '../redux/features/topRatedMoviesListSlice';
+import React, { useCallback } from 'react';
+import { FlatList, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { selectFavoriteMovies } from '../redux/features/favoriteMoviesSlice';
 
 import styles from '../styles';
 import MovieItem from '../views/MovieItem';
 
-const FavoriteMovies = ({navigation}) => {
-  const movies = useSelector(selectTopRatedMovies);
-  const favorites = useSelector(selectFavorites);
+const FavoriteMovies = ({ navigation }) => {
+  const favoriteMovies = useSelector(selectFavoriteMovies);
 
   const ItemDivider = () => {
     return <View style={styles.itemDivider} />;
   };
 
+  const renderItem = useCallback(
+    ({ item }) => <MovieItem movie={item} navigation={navigation}></MovieItem>,
+    []
+  );
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={favorites}
-        renderItem={({item}) => {
-          const movie = movies.find(movie => movie.id === item);
-          return <MovieItem movie={movie} navigation={navigation}></MovieItem>;
-        }}
-        keyExtractor={id => id}
+        data={favoriteMovies}
+        renderItem={renderItem}
+        keyExtractor={movie => movie.id}
         ItemSeparatorComponent={ItemDivider}
       />
     </View>

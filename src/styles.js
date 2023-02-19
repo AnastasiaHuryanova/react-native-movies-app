@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const window = Dimensions.get('window');
 
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     color: 'white',
     textShadowColor: 'black',
-    textShadowOffset: {width: 1, height: 1},
+    textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
     margin: 25,
     position: 'absolute',

@@ -1,71 +1,39 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useState } from 'react';
+import { FlatList, RefreshControl, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {useGetTopRatedMoviesQuery} from '../redux/features/apiSlice';
 import {
-  moviesSetting,
-  pageSetting,
-  resetMovies,
-  selectPage,
-  selectTopRatedMovies
-} from '../redux/features/topRatedMoviesListSlice';
+  nextPage,
+  resetPage,
+  selectPageNumber
+} from '../redux/features/pageSlice';
 import styles from '../styles';
 import MovieItem from '../views/MovieItem';
+import { useGetTopRatedMoviesQuery } from '../redux/features/moviesApi';
 
-const TMDB_URL = 'https://image.tmdb.org/t/p/w500';
-
-const TopRatedMoviesList = ({navigation}) => {
+const TopRatedMoviesList = ({ navigation }) => {
   const dispatch = useDispatch();
-  const movies = useSelector(selectTopRatedMovies);
-  const page = useSelector(selectPage);
+  const page = useSelector(selectPageNumber);
+  const { movies } = useGetTopRatedMoviesQuery(page, {
+    selectFromResult: ({ data }) => ({
+      movies: data?.movies
+    })
+  });
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const {data: fetchedMovies2} = useGetTopRatedMoviesQuery(page);
-  console.log(fetchedMovies2);
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      //const fetchedMovies = await getTopRatedMovies(page);
-      const movieList = await fetchedMovies2?.results?.map(movie => {
-        return {
-          title: movie.title,
-          id: movie.id,
-          image: TMDB_URL + movie.poster_path,
-          year: movie.release_date.slice(0, 4),
-          rating: movie.vote_average
-        };
-      });
-
-      dispatch(moviesSetting(movieList));
-    };
-    fetchMovies();
-  }, [page]);
   const onRefresh = useCallback(() => {
-    const refreshMovies = async () => {
-      setRefreshing(true);
-      //const fetchedMovies = await getTopRatedMovies(1);
-      const movieList = await fetchedMovies2.results.map(movie => {
-        return {
-          title: movie.title,
-          id: movie.id,
-          image: TMDB_URL + movie.poster_path,
-          year: movie.release_date.slice(0, 4),
-          rating: movie.vote_average
-        };
-      });
-      dispatch(resetMovies(movieList));
-      setRefreshing(false);
-    };
-    refreshMovies();
+    setRefreshing(true);
+    dispatch(resetPage());
+    setRefreshing(false);
   }, []);
+
   const ItemDivider = () => {
     return <View style={styles.itemDivider} />;
   };
 
   const renderItem = useCallback(
-    ({item}) => (
+    ({ item }) => (
       <MovieItem movie={item} navigation={navigation} key={item.id}></MovieItem>
     ),
     []
@@ -73,22 +41,19 @@ const TopRatedMoviesList = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {movies && (
-        <FlatList
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          alwaysBounceVertical={true}
-          data={movies}
-          renderItem={renderItem}
-          keyExtractor={movie => movie.id}
-          ItemSeparatorComponent={ItemDivider}
-          onEndReachedThreshold={1}
-          onEndReached={() => {
-            dispatch(pageSetting());
-          }}
-        />
-      )}
+      <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        data={movies}
+        renderItem={renderItem}
+        keyExtractor={movie => movie.id}
+        ItemSeparatorComponent={ItemDivider}
+        onEndReachedThreshold={1}
+        onEndReached={() => {
+          dispatch(nextPage());
+        }}
+      />
     </View>
   );
 };
