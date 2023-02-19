@@ -4,9 +4,10 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {useGetTopRatedMoviesQuery} from '../redux/features/apiSlice';
 import {
+  concatMovies,
   moviesSetting,
-  pageSetting,
-  resetMovies,
+  nextPage,
+  resetPage,
   selectPage,
   selectTopRatedMovies
 } from '../redux/features/topRatedMoviesListSlice';
@@ -22,44 +23,34 @@ const TopRatedMoviesList = ({navigation}) => {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const {data: fetchedMovies2} = useGetTopRatedMoviesQuery(page);
-  console.log(fetchedMovies2);
+  const {data: fetchedMovies} = useGetTopRatedMoviesQuery(page);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      //const fetchedMovies = await getTopRatedMovies(page);
-      const movieList = await fetchedMovies2?.results?.map(movie => {
-        return {
-          title: movie.title,
-          id: movie.id,
-          image: TMDB_URL + movie.poster_path,
-          year: movie.release_date.slice(0, 4),
-          rating: movie.vote_average
-        };
-      });
+    if (!fetchedMovies) return;
+    const mappedFetchedMovies = fetchedMovies.results.map(movie => {
+      return {
+        title: movie.title,
+        id: movie.id,
+        image: TMDB_URL + movie.poster_path,
+        year: movie.release_date.slice(0, 4),
+        rating: movie.vote_average
+      };
+    });
 
-      dispatch(moviesSetting(movieList));
-    };
-    fetchMovies();
-  }, [page]);
+    page === 1
+      ? dispatch(moviesSetting(mappedFetchedMovies))
+      : dispatch(concatMovies(mappedFetchedMovies));
+  }, [fetchedMovies]);
+
   const onRefresh = useCallback(() => {
     const refreshMovies = async () => {
       setRefreshing(true);
-      //const fetchedMovies = await getTopRatedMovies(1);
-      const movieList = await fetchedMovies2.results.map(movie => {
-        return {
-          title: movie.title,
-          id: movie.id,
-          image: TMDB_URL + movie.poster_path,
-          year: movie.release_date.slice(0, 4),
-          rating: movie.vote_average
-        };
-      });
-      dispatch(resetMovies(movieList));
+      dispatch(resetPage());
       setRefreshing(false);
     };
     refreshMovies();
   }, []);
+
   const ItemDivider = () => {
     return <View style={styles.itemDivider} />;
   };
@@ -85,7 +76,7 @@ const TopRatedMoviesList = ({navigation}) => {
           ItemSeparatorComponent={ItemDivider}
           onEndReachedThreshold={1}
           onEndReached={() => {
-            dispatch(pageSetting());
+            dispatch(nextPage());
           }}
         />
       )}

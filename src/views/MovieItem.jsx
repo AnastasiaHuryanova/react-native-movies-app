@@ -6,7 +6,7 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 
 import styles from '../styles';
 
-const MovieItem = memo(({movie, navigation}) => (
+const MovieItem = ({movie, navigation}) => (
   <TouchableOpacity
     onPress={() => navigation.navigate('MovieDetail', {id: movie.id})}>
     <View style={styles.item}>
@@ -25,6 +25,6 @@ const MovieItem = memo(({movie, navigation}) => (
       </View>
     </View>
   </TouchableOpacity>
-));
+);
 
-export default MovieItem;
+export default memo(MovieItem, (prev,next) => (prev.movie.id === next.movie.id));

@@ -42,7 +42,6 @@ const MovieDetail = ({navigation, route}) => {
   }, [id]);
 
   const {data: movieDetail2} = useGetMovieDetailQuery(id);
-  console.log(movieDetail2);
 
   const favoritesHandling = () => {
     if (iconHeart === faHeart) {

@@ -7,19 +7,22 @@ const topRatedMoviesListSlice = createSlice({
     page: 1
   },
   reducers: {
-    moviesSetting: (state, action) => {
+    concatMovies: (state, action) => {
       state.movies = [...state.movies, ...action.payload];
     },
-    resetMovies: (state, action) => {
+    moviesSetting: (state, action) => {
       state.movies = action.payload;
     },
-    pageSetting: state => {
+    nextPage: state => {
       state.page += 1;
+    },
+    resetPage: (state) => {
+      state.page = 1
     }
   }
 });
 
-export const {moviesSetting, resetMovies, pageSetting} =
+export const {concatMovies, moviesSetting, nextPage, resetPage} =
   topRatedMoviesListSlice.actions;
 export const selectPage = state => state.topRatedMoviesList.page;
 export const selectTopRatedMovies = state => state.topRatedMoviesList.movies;
