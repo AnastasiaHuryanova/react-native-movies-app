@@ -50,6 +50,10 @@ const moviesApi = createApi({
   })
 });
 
-export const { useGetTopRatedMoviesQuery, useGetMovieDetailQuery, middleware: moviesApiMiddleware } = moviesApi;
+export const {
+  useGetTopRatedMoviesQuery,
+  useGetMovieDetailQuery,
+  middleware: moviesApiMiddleware
+} = moviesApi;
 
 export default moviesApi.reducer;

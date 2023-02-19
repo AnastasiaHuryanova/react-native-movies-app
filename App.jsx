@@ -4,14 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { Pressable, Text } from 'react-native';
+import { Provider } from 'react-redux';
 
-import { navigationRef } from './src/RootNavigation';
-import * as RootNavigation from './src/RootNavigation.js';
-
+import navigationRef, { navigate } from './src/navigationRef';
 import FavoriteMovies from './src/screens/FavoriteMovies';
 import MovieDetail from './src/screens/MovieDetail';
 import TopRatedMoviesList from './src/screens/TopRatedMoviesList';
-import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 
 const Stack = createNativeStackNavigator();
@@ -35,8 +33,7 @@ export default () => {
             options={{
               title: 'Movies',
               headerRight: () => (
-                <Pressable
-                  onPress={() => RootNavigation.navigate('FavoriteMovies', {})}>
+                <Pressable onPress={() => navigate('FavoriteMovies', {})}>
                   <Text style={{ color: '#0d6efd', fontSize: 18 }}>
                     Favorites
                   </Text>
