@@ -6,7 +6,7 @@ import {ImageBackground, Pressable, ScrollView, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useGetMovieDetailQuery} from '../redux/features/apiSlice';
 import {
-  addFavoriteMovieId,
+  addFavoriteMovie,
   removeFavoriteByMovieId,
   selectFavorites
 } from '../redux/features/favoriteMoviesSlice';
@@ -22,15 +22,15 @@ const MovieDetail = ({navigation, route}) => {
   const favorites = useSelector(selectFavorites);
 
   const [iconHeart, setIconHeart] = useState(
-    favorites.includes(id) ? faHeartSolid : faHeart
+    favorites.find(movie => movie.id === id) ? faHeartSolid : faHeart
   );
 
-  const {data: details, isLoading} = useGetMovieDetailQuery(id);
+  const {data: movie, isLoading} = useGetMovieDetailQuery(id);
 
   const favoritesHandling = () => {
     if (iconHeart === faHeart) {
       setIconHeart(faHeartSolid);
-      dispatch(addFavoriteMovieId(id));
+      dispatch(addFavoriteMovie(movie));
     } else {
       setIconHeart(faHeart);
       return dispatch(removeFavoriteByMovieId(id));
@@ -53,21 +53,22 @@ const MovieDetail = ({navigation, route}) => {
         </Pressable>
       )
     });
-  }, [iconHeart]);
+  }, [iconHeart, movie]);
 
   if (isLoading) return null;
+  
 
   return (
     <ScrollView>
       <View>
         <ImageBackground
-          source={{uri: TMDB_URL + details.backdrop_path}}
+          source={{uri: TMDB_URL + movie.backdrop_path}}
           resizeMode="cover"
           style={{height: 300}}>
-          <Text style={styles.movieName}>{details.title}</Text>
+          <Text style={styles.movieName}>{movie.title}</Text>
         </ImageBackground>
       </View>
-      <Text style={styles.overview}>{details.overview}</Text>
+      <Text style={styles.overview}>{movie.overview}</Text>
     </ScrollView>
   );
 };

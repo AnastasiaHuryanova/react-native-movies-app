@@ -61,7 +61,6 @@ const TopRatedMoviesList = ({navigation}) => {
     ),
     []
   );
-
   return (
     <View style={styles.container}>
       {movies && (
