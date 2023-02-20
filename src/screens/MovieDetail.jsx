@@ -56,7 +56,6 @@ const MovieDetail = ({navigation, route}) => {
   }, [iconHeart, movie]);
 
   if (isLoading) return null;
-  
 
   return (
     <ScrollView>

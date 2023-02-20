@@ -5,8 +5,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {Pressable, Text} from 'react-native';
 
-import {navigationRef} from './app/RootNavigation';
-import * as RootNavigation from './app/RootNavigation.js';
+import {navigationRef} from './app/NavigationRef';
+import * as RootNavigation from './app/NavigationRef.js';
 
 import FavoriteMovies from './screens/FavoriteMovies';
 import MovieDetail from './screens/MovieDetail';
